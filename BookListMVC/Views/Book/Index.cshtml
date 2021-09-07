@@ -1,0 +1,88 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Book List";
+}
+@using BookListMVC.Models
+@model BookListMVC.Models.BookListViewModel
+
+@{
+}
+
+<h1 class="text-center">Books</h1>
+
+<button type="button" class="btn btn-primary my-4" data-toggle="modal" data-target="#newBookModal">
+    Create New Book
+</button>
+<!--    Modal Create New Book   -->
+<div class="modal fade" id="newBookModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Book</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-controller="Book">
+                    <div class="form-group">
+                        <label asp-for="Book.Name">Book Name</label>
+                        <input asp-for="Book.Name" type="text" class="form-control" required />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Book.Author">Book Author</label>
+                        <input asp-for="Book.Author" class="form-control" type="text" required />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Book.Page">Book Pages</label>
+                        <input asp-for="Book.Page" type="number" value="0" class="form-control" />
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" asp-controller="Book" asp-action="Add" class="btn btn-primary">Add Book</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+@{int index = 1;}
+<table class="table">
+    <thead class="thead-light">
+        <tr class="my-1">
+            <th>#</th>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Author</th>
+            <th>Pages</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <form method="post" asp-controller="Book">
+            @foreach (var book in Model.Books)
+            {
+            <tr>
+                <td>@index</td>
+                <td>@book.Id</td>
+                <td>@book.Name</td>
+                <td>@book.Author</td>
+                <td>@book.Page</td>
+                <td>
+                    <a class="btn btn-secondary" asp-controller="Book"  asp-action="Edit" asp-route-id="@book.Id">Edit</a>
+                    <button type="submit" class="btn btn-danger" asp-controller="Book" asp-action="Delete" asp-route-id="@book.Id">Delete</button>
+                </td>
+            </tr>
+            }
+            </form>
+        </tbody>
+    </table>
+    <script>
+        // data-toggle="modal" data-target="#editBookModal"
+    </script>
+    @section Scripts{
+        <partial name="_ValidationScriptsPartial" />
+    }
+
